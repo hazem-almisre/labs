@@ -60,4 +60,14 @@ class Lab extends Authenticatable implements JWTSubject
         return [];
     }
 
+    /**
+     * Get all of the analyses for the Lab
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function analyses()
+    {
+        return $this->hasMany(Analysis::class, 'labId', 'labId');
+    }
+
 }

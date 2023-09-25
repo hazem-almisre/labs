@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers\Flutter\User;
 use App\User;
+use App\Models\Analysis;
 use Illuminate\Http\Request;
 use App\Message\ResponseMessage;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use function PHPUnit\Framework\isNull;
 
+use function PHPUnit\Framework\isNull;
 use function PHPUnit\Framework\isEmpty;
 use App\Http\Requests\FlutterUserLoginRequest;
 use App\Http\Requests\FlutterUserRegisterRequest;
+use App\Models\Lab;
 
 class UserAuthController extends Controller
 {

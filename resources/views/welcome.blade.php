@@ -115,8 +115,8 @@
                                 </div>
                             </div>
                             </div>
-                    <!--------------Supplier----------->
-                    <div class="accordion-item ">
+                    <!--------------Offer----------->
+                    <div class="accordion-item" id="offer" style="display: none">
                         <h2 class="accordion-header" id="headingtow">
                           <button class="accordion-button bg-dark text-light "  type="button" data-bs-toggle="collapse" data-bs-target="#collapsetow" aria-expanded="false" aria-controls="collapsetow">
                             <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
@@ -300,6 +300,7 @@
                 }
                 else if(type === 'lab'){
                     $("#product").css("display","");
+                    $("#offer").css("display","");
                 }
             }
         </script>

@@ -19,28 +19,31 @@
                 <div class="card-body">
                     <div class="table-responsive">
                         <label class="d-inline">Search : </label>      <!-----f----->
-                        <input type="text" v-model="searchTerm" class="form-control d-inline" style="width:200px;" placeholder="Search by name"><br> <br>
+                        <input type="text" v-model="searchTerm" class="form-control d-inline" style="width:200px;" placeholder="Search by DateEnd"><br> <br>
                         <table class="table table-striped table-hover table-bordered  border-white" id="" width="100%" cellspacing="0">
                             <thead>
                             <tr class="bg-dark text-white">
                                 <th>DateEnd</th>
                                 <th>Photo</th>
-                                <th>LabName</th>
+                                <th>PriceAfterOffer</th>
+                                <th>PriceBeforOffer</th>
+                                <th>AnalysisCount</th>
+                                <th>Action</th>
                             </tr>
                             </thead>
 
                             <tbody>
-                            <tr v-for="supplier in filtersearch" :key="supplier.id">
-                                <td>{{ supplier.name }}</td>
-                                <td><img :src="supplier.photo" id="em_photo"></td>
-                                <td>{{ supplier.phone }}</td>
-                                <td>{{ supplier.shopname }}</td>
-                                <td>{{ supplier.address }}</td>
+                            <tr v-for="offer in filtersearch" :key="offer.offerId">
+                                <td>{{ offer.dateEnd }}</td>
+                                <td><img :src="'storage/'+offer.photo" id="em_photo"></td>
+                                <td>{{ offer.priceAfterOffer }}</td>
+                                <td>{{ offer.priceBeforOffer }}</td>
+                                <td>{{ offer.analysisCount }}</td>
                                 <td>
-                                    <router-link :to="{name: 'edit-supplier', params:{id: supplier.id} }" class="btn btn-sm btn-info">Edit</router-link>
+                                    <router-link :to="{name: 'edit-supplier', params:{id: offer.offerId} }" class="btn btn-sm btn-info">Edit</router-link>
                                     <!-- <router-link :to="'/edit-category/'+category.id" class="btn btn-warning mr-1">Edit</router-link> --> <!--or, -->
                                     <!-- <router-link :to="`/edit-category/${category.id}`" class="btn btn-sm btn-primary text-white">Edit</router-link> -->
-                                    <a @click="deleteSupplier(supplier.id)" class="btn btn-sm btn-danger text-white">Delete</a>
+                                    <a @click="deleteOffer(offer.offerId)" class="btn btn-sm btn-danger text-white">Delete</a>
                                 </td>
                             </tr>
                             </tbody>
@@ -62,31 +65,36 @@
             }
         },
         created(){
-            this.allSupplier();
+            this.allOffer();
         },
         data(){
             return{
-                suppliers:[],
+                offers:[],
                 searchTerm:'',
             }
         },
         computed:{
             filtersearch(){
-                return this.suppliers.filter(supplier => {
-                    //return supplier.phone.match(this.searchTerm)
-                    return supplier.name.toLowerCase().match(this.searchTerm.toLowerCase())
+                return this.offers.filter(offer => {
+                    //return offer.phone.match(this.searchTerm)
+                    return offer.dateEnd.toLowerCase().match(this.searchTerm.toLowerCase())
                     // let searchLowerCase = supplier.name.toLowerCase()
                     // return searchLowerCase.match(this.searchTerm.toLowerCase())
                 })
             }
         },
         methods:{
-            allSupplier(){
-                axios.get('/api/supplier/')
-                    .then(({data}) => (this.suppliers = data))
-                    .catch()
+            allOffer(){
+                axios.get('/lab/offer/get/all/offer')
+                    .then((response) => {
+                        console.log(response.data.data.result);
+                        this.offers = response.data.data.result
+                        })
+                    .catch((error)=>{
+                        console.log(error.response)
+                    })
             },
-            deleteSupplier(id){
+            deleteOffer(offerId){
                 Swal.fire({
                     title: 'Are you sure?',
                     text: "You won't be able to revert this!",
@@ -97,13 +105,14 @@
                     confirmButtonText: 'Yes, delete it!'
                 }).then((result) => {
                     if (result.value) {
-                        axios.delete('/api/supplier/'+id)
+                        axios.delete('/lab/offer/delete/'+offerId)
                             .then(()=>{
-                                this.suppliers = this.suppliers.filter(supplier =>{
-                                    return supplier.id !=id
+                                this.offers = this.offers.filter(offer =>{
+                                    return offer.offerId !=offerId
                                 })
                             })
-                            .catch(()=>{
+                            .catch((error)=>{
+                                console.log(error.response)
                                 this.$router.push({name: 'supplier'})
                             })
                         Swal.fire(

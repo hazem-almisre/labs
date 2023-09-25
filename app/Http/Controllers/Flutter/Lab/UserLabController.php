@@ -59,4 +59,13 @@ class UserLabController extends Controller
             return parent::sendError($th->getMessage(),parent::getPostionError(UserLabController::class,59),500) ;
         }
     }
+
+    public function getLabWithAnalyses($labId) {
+        try {
+            $labWithAnalyses= Lab::query()->where('labId','=',$labId)->with('analyses')->first();
+            return parent::sendRespons(['result'=>$labWithAnalyses],ResponseMessage::$registerNurseSuccessfullMessage);
+        } catch (\Throwable $th) {
+            return parent::sendError($th->getMessage(),parent::getPostionError(UserLabController::class,68),500) ;
+        }
+    }
 }

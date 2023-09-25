@@ -16,6 +16,9 @@ class CreateContactsTable extends Migration
         Schema::create('contacts', function (Blueprint $table) {
             $table->bigIncrements('contactId');
             $table->string('region');
+            $table->string('address');
+            $table->string('sickPhone');
+            $table->string('sickName');
             $table->text('moreDetails');
             $table->unsignedBigInteger('id');
             $table->foreign('id')->references('id')->on('users')->onDelete('cascade');

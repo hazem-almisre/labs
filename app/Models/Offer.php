@@ -10,9 +10,19 @@ class Offer extends Model
 
     protected $fillable = [
         'photo',
-        'labId',
+        'priceBeforOffer',
+        'priceAfterOffer',
         'dateEnd',
-
+        'analysisCount',
     ];
 
+    /**
+     * Get all of the analysis for the Offer
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
+     */
+    public function analysis()
+    {
+        return $this->hasManyThrough(Analysis::class, AnalysisOffers::class,'analysisId','analysisId');
+    }
 }

@@ -17,8 +17,9 @@ class CreateOffersTable extends Migration
             $table->bigIncrements('offerId');
             $table->text('photo');
             $table->date('dateEnd');
-            $table->unsignedBigInteger('labId');
-            $table->foreign('labId')->references('labId')->on('labs')->onDelete('cascade');
+            $table->integer('priceBeforOffer');
+            $table->integer('priceAfterOffer');
+            $table->integer('analysisCount');
             $table->timestamps();
         });
     }

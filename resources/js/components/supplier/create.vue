@@ -24,27 +24,16 @@
                                 <div class="form-row">
                                     <div class="col-md-6">
                                         <div class="form-label-group">
-                                            <label>Full Name</label>
-                                            <input type="text" v-model="form.name" class="form-control" required placeholder="Enter Name">
-                                            <small class="text-danger" v-if="errors.name">{{ errors.name[0] }}</small>
+                                            <label>Date End</label>
+                                            <input type="text" v-model="form.dateEnd" class="form-control" required placeholder="Enter dateEnd">
+                                            <small class="text-danger" v-if="errors.dateEnd">{{ errors.dateEnd[0] }}</small>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-label-group">
-                                            <label>Email Address</label>
-                                            <input type="text" v-model="form.email" class="form-control" placeholder="Enter Email" required>
-                                            <small class="text-danger" v-if="errors.email">{{ errors.email[0] }}</small>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="form-row">
-                                    <div class="col-md-12">
-                                        <div class="form-label-group">
-                                            <label>Address</label>
-                                            <input type="text" v-model="form.address" class="form-control" required placeholder="Enter Address">
-                                            <small class="text-danger" v-if="errors.address">{{ errors.address[0] }}</small>
+                                            <label>Count</label>
+                                            <input type="text" v-model="form.analysisCount" class="form-control" placeholder="analysisCount" required readonly>
+                                            <small class="text-danger" v-if="errors.analysisCount">{{ errors.analysisCount[0] }}</small>
                                         </div>
                                     </div>
                                 </div>
@@ -53,17 +42,47 @@
                             <div class="form-row">
                                 <div class="col-md-6">
                                     <div class="form-label-group">
-                                        <label>Shop Name</label>
-                                        <input type="text" v-model="form.shopname" class="form-control" required placeholder="Enter Shop Name">
-                                        <small class="text-danger" v-if="errors.shopname">{{ errors.shopname[0] }}</small>
+                                        <label>Price Befor Offer</label>
+                                        <input type="text" v-model="form.priceBeforOffer" class="form-control" required placeholder="Enter price">
+                                        <small class="text-danger" v-if="errors.PriceBeforOffer">{{ errors.PriceBeforOffer[0] }}</small>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-label-group">
-                                        <label>Phone Number</label>
-                                        <input type="text" v-model="form.phone" class="form-control" required placeholder="Enter Phone Number">
-                                        <small class="text-danger" v-if="errors.phone">{{ errors.phone[0] }}</small>
+                                        <label>Price After Offer</label>
+                                        <input type="text" v-model="form.priceAfterOffer" class="form-control" required placeholder="Enter price">
+                                        <small class="text-danger" v-if="errors.priceAfterOffer">{{ errors.priceAfterOffer[0] }}</small>
                                     </div>
+                                </div>
+                            </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="form-row">
+                                <div class="col-md-12" >
+                                    <div class="form-label-group" >
+                                    <h2>Choose Analysis</h2>
+                                    <div style="height:100px;overflow-y : scroll;">
+                                    <div class="list-group  bg-secondary">
+                                    <label  class="list-group-item"  v-for="analy in analysis" :key="analy.analysisId">
+                                        <input class="form-check-input me-1"  type="checkbox"  :value="analy.analysisId" v-model="form.analysisIds">
+                                        {{ analy.lable }}
+                                    </label>
+                                    </div>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                            <div class="form-group">
+                            <div class="form-row">
+                                <div class="col-md-6">
+                                    <div class="form-label-group">
+                                        <input type="file" class="btn btn-info" @change="onFileselected">   <!----------------->
+                                        <small class="text-danger" v-if="errors.image">{{ errors.image[0] }}</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <img v-if="image!=''" :src="image" style="height:40px; width: 40px;">	<!------------------>
                                 </div>
                             </div>
                             </div>
@@ -79,6 +98,9 @@
 
 <script>
     export default {
+        created(){
+           this.getAnalysis()
+        },
         mounted(){
             if (!User.loggedIn()) {
                 this.$router.push({ name:'/' })
@@ -87,39 +109,83 @@
         data(){
             return{
                 form:{
-                    name :'',
-                    email :'',
-                    phone:'',
-                    address:'',
-                    photo :'',
-                    shopname:''
+                    dateEnd :null,
+                    priceAfterOffer :null,
+                    priceBeforOffer:null,
+                    analysisIds:[],
+                    photo :null,
+                    analysisCount:0
                 },
+                analysis:[],
+                image:'',
                 errors:{},
             }
         },
         methods:{
-            onFileselected(event){
-                //console.log(event)
-                let file=event.target.files[0];
-                if (file.size > 1048770) {
-                    Notification.image_validation()
-                }else{
-                    let reader = new FileReader();
+			onFileselected(event){        //click korlei ai 'event' er vitor pic er sob details chole asbe
+				//console.log(event)
+                this.form.photo=event.target.files[0];
+				let file=event.target.files[0];      //now,File's(name,size,type) available in variable 'file'
+				if (file.size > 1048770) {           //made condition: file will less than 1MB
+				    Notification.image_validation()     //used 'Noti'
+				}else{
+                    let reader = new FileReader();     //created new instance
                     reader.onload = event => {
-                        this.form.photo = event.target.result
+                        this.image = event.target.result   //storing/taking pic's extention in 'photo'
                         console.log(event.target.result);
                     };
                     reader.readAsDataURL(file);
-                }
-            },
+				}
+			},
             supplierInsert(){
-                axios.post('/api/supplier/',this.form)
-                    .then(() => {
+                console.log(this.form)
+                const formDate=new FormData();
+                console.log(formDate);
+                Object.entries(this.form).forEach(([key, value]) => {
+                    console.log(key+" "+value);
+                    formDate.append(key, value);
+                });
+                axios.post('/lab/offer/add',formDate,{headers:{
+                    Authorization: 'Bearer '+sessionStorage.getItem('token')
+                    }})
+                    .then((response) => {
+                        console.log(response.data)
                         this.$router.push({ name: 'supplier' })
                         Notification.success()
                     })
-                    .catch(error => this.errors = error.response.data.errors)
+                    .catch((error) => {
+                        console.log(error.response)
+                        this.errors = error.response.data.errors
+            })
             },
+            getAnalysis(){
+                    axios.get('lab/analysis/get/analyses',{headers:{
+                    Authorization: 'Bearer '+sessionStorage.getItem('token')
+                    }})
+                    .then((response) => {
+                        console.log(response.data)
+                        this.analysis=response.data.data.result;
+                    })
+                    .catch((error) => {
+                        console.log(error.response)
+                        this.errors = error.response
+                    }
+                        )
+            },
+            // chooseAnalysis(analysisId,event){
+            //     console.log(event.preventDefault())
+            //     if(event.checked){
+            //         this.form.analysisIds.push(parseInt(analysisId))
+            //         this.form.analysisCount++;
+            //         console.log(this.form.analysisCount)
+            //     }
+            //     else
+            //     {
+            //         this.form.analysisIds.pop(parseInt(analysisId))
+            //         this.form.analysisCount--;
+            //     }
+
+            // }
         }
     }
 </script>

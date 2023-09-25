@@ -12,7 +12,9 @@ class Contact extends Model
         'address',
         'region',
         'moreDetails',
-        'userId',
+        'id',
+        'sickPhone',
+        'sickName'
     ];
 
 }

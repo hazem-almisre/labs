@@ -19,6 +19,8 @@ class CreateRatingsTable extends Migration
             $table->text('opinion');
             $table->unsignedBigInteger('orderId');
             $table->foreign('orderId')->references('orderId')->on('order_apis')->onDelete('cascade');
+            $table->unsignedBigInteger('userId');
+            $table->foreign('userId')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }
