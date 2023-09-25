@@ -12,9 +12,11 @@ class Rating extends Model
         'rate',
         'opinion',
         'orderId',
+        'userId'
     ];
 
     protected $hidden=[
-        'orderId'
+        'orderId',
+        'userId'
     ];
 }

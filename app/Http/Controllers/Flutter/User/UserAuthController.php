@@ -6,6 +6,7 @@ use App\Models\Analysis;
 use Illuminate\Http\Request;
 use App\Message\ResponseMessage;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\FlutterUpdateUserResquest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -14,6 +15,7 @@ use function PHPUnit\Framework\isEmpty;
 use App\Http\Requests\FlutterUserLoginRequest;
 use App\Http\Requests\FlutterUserRegisterRequest;
 use App\Models\Lab;
+use Illuminate\Support\Facades\Storage;
 
 class UserAuthController extends Controller
 {
@@ -30,7 +32,7 @@ class UserAuthController extends Controller
 
             return parent::sendRespons(['result'=>[]],ResponseMessage::$registerSuccessfullMessage);
         } catch (\Throwable $th) {
-            return parent::sendError($th->getMessage(),parent::getPostionError(UserAuth::class,25),500) ;
+            return parent::sendError($th->getMessage(),parent::getPostionError(UserAuthController::class,25),500) ;
         }
     }
 
@@ -47,7 +49,7 @@ class UserAuthController extends Controller
             return  parent::sendError(null,ResponseMessage::$isUserRegister);
         }
     }catch(\Throwable $e){
-        return parent::sendError($e->getMessage(),parent::getPostionError(UserAuth::class,47),500);
+        return parent::sendError($e->getMessage(),parent::getPostionError(UserAuthController::class,47),500);
         }
     }
 
@@ -85,8 +87,44 @@ class UserAuthController extends Controller
         $user['type']=$guard;
         return parent::sendRespons(['result'=>$user],ResponseMessage::$loginSuccessfullMessage,200);
     } catch (\Throwable $th) {
-        return parent::sendError($th->getMessage(),parent::getPostionError(UserAuth::class,94),500);
+        return parent::sendError($th->getMessage(),parent::getPostionError(UserAuthController::class,94),500);
     }
 
+    }
+
+    public function getUser() {
+    try{
+        $user = auth('api')->user();
+        return parent::sendRespons(['result'=>$user],ResponseMessage::$registerSuccessfullMessage,200);
+    } catch (\Throwable $th) {
+        return parent::sendError($th->getMessage(),parent::getPostionError(UserAuthController::class,98),500);
+    }
+    }
+
+    public function updateUser(FlutterUpdateUserResquest $request){
+        try {
+            $user = auth()->user();
+            $user->name=($request->name)?$request->name:$user->name;
+            $user->address=($request->address)?$request->address:$user->address;
+            if($request['photo'])
+            {
+                $image=$request['photo'];
+                $format = $image->getClientOriginalExtension();
+                $fileName = time() . rand(1, 999999) . '.' . $format;
+                $path = 'userImage/' . $fileName;
+                $image->storeAs('userImage', $fileName);
+                if(Storage::exists($user->photo)){
+                    Storage::delete($user->photo);
+                }
+                $user->photo=$path;
+            }
+            $user->gendor=($request->gendor)?$request->gendor:$user->gendor;
+            $user->birthDay=($request->birthDay)?$request->birthDay:$user->birthDay;
+            $user->save();
+            // User::query()->where('id','=',$user->id)->update((array)$user);
+            return parent::sendRespons(['result'=>$user],ResponseMessage::$registerSuccessfullMessage,200);
+        } catch (\Throwable $th) {
+            return parent::sendError($th->getMessage(),parent::getPostionError(UserAuthController::class,114),500);
+        }
     }
 }
