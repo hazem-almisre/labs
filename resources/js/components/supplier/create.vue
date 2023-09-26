@@ -25,7 +25,7 @@
                                     <div class="col-md-6">
                                         <div class="form-label-group">
                                             <label>Date End</label>
-                                            <input type="text" v-model="form.dateEnd" class="form-control" required placeholder="Enter dateEnd">
+                                        <input type="date" pattern="\d{4}-\d{2}-\d{2}" v-model="form.dateEnd" class="form-control"  autofocus="autofocus" required="">
                                             <small class="text-danger" v-if="errors.dateEnd">{{ errors.dateEnd[0] }}</small>
                                         </div>
                                     </div>

@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class FlutterUpdateUserResquest extends FormRequest
+class FlutterUpdateNurseResquest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -28,8 +28,6 @@ class FlutterUpdateUserResquest extends FormRequest
         return [
                 'address'=>['string','nullable'],
                 'photo'=>['nullable','image','mimes:jpeg,jpg,png,gif'],
-                'gendor'=>['string','nullable'],
-                'birthDay'=>['string','nullable'],
         ];
     }
 

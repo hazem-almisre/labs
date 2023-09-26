@@ -8158,6 +8158,7 @@ var render = function render() {
     staticClass: "form-control",
     attrs: {
       type: "date",
+      pattern: "\\d{4}-\\d{2}-\\d{2}",
       autofocus: "autofocus",
       required: ""
     },
@@ -12899,9 +12900,10 @@ var render = function render() {
     }],
     staticClass: "form-control",
     attrs: {
-      type: "text",
-      required: "",
-      placeholder: "Enter dateEnd"
+      type: "date",
+      pattern: "\\d{4}-\\d{2}-\\d{2}",
+      autofocus: "autofocus",
+      required: ""
     },
     domProps: {
       value: _vm.form.dateEnd

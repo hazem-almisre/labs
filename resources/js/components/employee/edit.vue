@@ -58,7 +58,7 @@
                                 <div class="col-md-4">
                                     <div class="form-label-group">
                                         <label for="firstName">Joining Date</label>
-                                        <input type="date" v-model="form.joining_date" class="form-control"  autofocus="autofocus" required="">
+                                        <input type="date" pattern="\d{4}-\d{2}-\d{2}" v-model="form.joining_date" class="form-control"  autofocus="autofocus" required="">
                                         <small class="text-danger" v-if="errors.joining_date">{{ errors.joining_date[0] }}</small>
                                     </div>
                                 </div>

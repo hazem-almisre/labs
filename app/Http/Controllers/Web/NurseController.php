@@ -107,4 +107,6 @@ class NurseController extends Controller
             return parent::sendError($th->getMessage(),parent::getPostionError(AdminLabController::class,91),500) ;
         }
     }
+
+    
 }

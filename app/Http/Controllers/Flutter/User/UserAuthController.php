@@ -103,8 +103,7 @@ class UserAuthController extends Controller
 
     public function updateUser(FlutterUpdateUserResquest $request){
         try {
-            $user = auth()->user();
-            $user->name=($request->name)?$request->name:$user->name;
+            $user = auth('api')->user();
             $user->address=($request->address)?$request->address:$user->address;
             if($request['photo'])
             {
