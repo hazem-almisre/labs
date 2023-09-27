@@ -105,7 +105,7 @@ class UserAuthController extends Controller
         try {
             $user = auth('api')->user();
             $user->address=($request->address)?$request->address:$user->address;
-            if($request['photo'])
+            if(is_file($request['photo']))
             {
                 $image=$request['photo'];
                 $format = $image->getClientOriginalExtension();

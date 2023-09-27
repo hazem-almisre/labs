@@ -15,7 +15,7 @@ class NurseController extends Controller
             $user = auth('nurse')->user();
             return parent::sendRespons(['result'=>$user],ResponseMessage::$registerSuccessfullMessage,200);
         } catch (\Throwable $th) {
-            return parent::sendError($th->getMessage(),parent::getPostionError(UserAuthController::class,98),500);
+            return parent::sendError($th->getMessage(),parent::getPostionError(NurseController::class,98),500);
         }
         }
     

@@ -21,20 +21,20 @@
 				</div>
 
 				<div class="card-body">
-					<form  >	<!------------------------>
+					<form @submit.prevent="employeeInsert" enctype="multipart/form-data" >	<!------------------------>
 						<div class="form-group">
 							<div class="form-row">
-                                <div class="col-md-6">
-                                <div class="form-label-group">
-                                    <label for="phoneEnter">PhoneEnter</label>
-                                    <input type="phoneEnter" id="phoneEnter" v-model="form.phoneEnter" class="form-control" required placeholder="Enter phoneEnter" readonly>
-                                    <small class="text-danger" v-if="errors.phoneEnter">{{ errors.phoneEnter[0] }}</small>
-                                </div>
-                                </div>
+								<div class="col-md-6">
+									<div class="form-label-group">
+										<label for="firstName">Full Name</label>
+										<input type="text" id="firstName" v-model="form.name" class="form-control" required placeholder="Enter Name">
+										<small class="text-danger" v-if="errors.name">{{ errors.name[0] }}</small>
+									</div>
+								</div>
                                 <div class="col-md-6">
 									<div class="form-label-group">
 										<label for="phone">Phone Number</label>
-										<input type="text" id="phone" v-model="form.phone" class="form-control" required placeholder="Enter Phone Number" readonly>
+										<input type="text" id="phone" v-model="form.phone" class="form-control" required placeholder="Enter Phone Number">
 										<small class="text-danger" v-if="errors.phone">{{ errors.phone[0] }}</small>
 									</div>
 								</div>
@@ -42,24 +42,18 @@
 						</div>
 						<div class="form-group">
 							<div class="form-row align-items-end">
-								<div class="col-md-4">
+								<div class="col-md-6">
 									<div class="form-label-group">
 										<label for="Address">Address</label>
-										<input type="text" v-model="form.address" class="form-control" required placeholder="Enter Address" readonly>
+										<input type="text" v-model="form.address" class="form-control" required placeholder="Enter Address">
 										<small class="text-danger" v-if="errors.address">{{ errors.address[0] }}</small>
 									</div>
 								</div>
-                                								<div class="col-md-4">
-									<div class="form-label-group">
-										<label for="firstName">Full Name</label>
-										<input type="text" id="firstName" v-model="form.name" class="form-control" required placeholder="Enter Name" readonly>
-										<small class="text-danger" v-if="errors.name">{{ errors.name[0] }}</small>
-									</div>
-								</div>
-								<div class="col-md-4">
+
+								<div class="col-md-6">
 									<div class="form-label-group">
 										<label for="ownerName">OwnerName</label>
-										<input type="text" id="ownerName" v-model="form.ownerName" class="form-control" required placeholder="Enter ownerName" readonly>
+										<input type="text" id="ownerName" v-model="form.ownerName" class="form-control" required placeholder="Enter ownerName">
 										<small class="text-danger" v-if="errors.ownerName">{{ errors.ownerName[0] }}</small>
 									</div>
 								</div>
@@ -67,23 +61,38 @@
 						</div>
                         <div class="form-group">
                             <div class="form-row">
-                                    <div class="col-md-12">
+                                <div class="col-md-6">
 									<div class="form-label-group">
-                                    <label for="select">Region</label>
-										<input type="text" id="select" v-model="form.region" class="form-control" required placeholder="Enter ownerName" readonly>                 
+                                    <label for="select">Region is "{{ region.value }}" change if you need</label>
+                                    <select class="form-select" id="select" v-model="region"  aria-label="Default select example">
+                                    <option v-for="labLocation in labLocations " :key="labLocation.labLocationId" :value="{ key:labLocation.labLocationId,value:labLocation.region }">{{ labLocation.region }}</option>
+                                    </select>
 										<small class="text-danger" v-if="errors.region">{{ errors.region[0] }}</small>
 									</div>
 								</div>
+                                <div class="col-md-6">
+                                <div class="form-label-group">
+                                    <label for="phoneEnter">PhoneEnter</label>
+                                    <input type="phoneEnter" id="phoneEnter" v-model="form.phoneEnter" class="form-control" readonly placeholder="Enter phoneEnter">
+                                    <small class="text-danger" v-if="errors.phoneEnter">{{ errors.phoneEnter[0] }}</small>
+                                </div>
+                                </div>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="form-row">
-                                <div class="col-md-12">
-                                    <img v-if="form.photo!=null" :src="'storage/'+form.photo" style="height:40px; width: 40px;">	<!------------------>
-                                    <img v-else :src="form.photo" style="height:40px; width: 40px;">	<!------------------>
+                                <div class="col-md-6">
+                                    <div class="form-label-group">
+                                        <input type="file" class="btn btn-info" @change="onFileselected">   <!----------------->
+                                        <small class="text-danger" v-if="errors.image">{{ errors.image[0] }}</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <img v-if="image!=''" :src="image" style="height:40px; width: 40px;">	<!------------------>
                                 </div>
                             </div>
                         </div>
+						<button type="submit" class="btn btn-success">Update</button>
 					</form>
 				</div>
 				<div class="card-footer small text-muted">Labs App</div>
@@ -99,10 +108,10 @@
             if (!User.loggedIn()) {
                 this.$router.push({ name:'/' })
             }
-            this.form=this.$route.params.id
         },
         created(){
-            this.getRegions();
+            this.getLab()
+            this.getRegions()
         },
 		data(){
 			return{
@@ -119,6 +128,12 @@
                     isActive:false,
 
 				},
+                labLocations:[],
+                region:{
+                    key:null,
+                    value:null,
+                },
+                image:'',
 				errors:{}
 			}
 		},
@@ -148,12 +163,12 @@
                     console.log(key+" "+value);
                     formDate.append(key, value);
                 });
-				axios.post('/lab/admin/add/lab',formDate,{headers : {
+				axios.post('/lab/lab/update',formDate,{headers : {
                 'Content-Type': 'multipart/form-data',
                 'Authorization': 'Bearer '+sessionStorage.getItem('token')
                 }})  //resource_route|api.php|post_method+route= go>Controller>Store()
 				.then(() => {
-					this.$router.push({ name: 'category' })   //(index.vue)all-employee vue page e jabe
+					this.$router.push({ name: 'lab-profile' })   //(index.vue)all-employee vue page e jabe
 					Notification.success()
 				})
 				.catch((error) => {
@@ -162,8 +177,25 @@
                 })
 			},
 
-            getRegions(){
-                axios.get('/lab/admin/get/regions',{headers:{
+            getLab(){
+                axios.get('/lab/lab/get',{headers:{
+                Authorization: 'Bearer '+sessionStorage.getItem('token')
+            }})
+                .then((response)=>{
+                    console.log(response.data)
+                    this.form=response.data.data.result
+                    this.image='storage/'+this.form.photo
+                    this.region.value= this.form.region
+                    this.region.key=this.form.labLocationId
+                    }
+                    )
+                .catch((error) => {
+                    console.log(error);
+                    this.errors = error.data.data;
+                })
+            },
+             getRegions(){
+                axios.get('/lab/lab/get/regions',{headers:{
                 Authorization: 'Bearer '+sessionStorage.getItem('token')
             }})
                 .then((response)=>{
@@ -176,11 +208,6 @@
                     this.errors = error.data.data;
                 })
             },
-            getLocationId(id)
-            {
-                console.log(id)
-                this.form.lablocationId=id;
-            }
 		}
 	}
 </script>

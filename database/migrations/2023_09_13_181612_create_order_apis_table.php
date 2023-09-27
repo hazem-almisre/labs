@@ -17,7 +17,6 @@ class CreateOrderApisTable extends Migration
             $table->bigIncrements('orderId');
             $table->unsignedBigInteger('nurseId');
             $table->unsignedBigInteger('contactId');
-            $table->unsignedBigInteger('analysisId');
             $table->string('totalPrice');
             $table->string('serviceName');
             $table->integer('status')->default(0);
@@ -25,7 +24,6 @@ class CreateOrderApisTable extends Migration
             $table->time('timeOrder');
             $table->foreign('nurseId')->references('nurseId')->on('nurses');
             $table->foreign('contactId')->references('contactId')->on('contacts');
-            $table->foreign('analysisId')->references('analysisId')->on('analyses');
             $table->timestamps();
         });
     }

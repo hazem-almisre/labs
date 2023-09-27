@@ -82,7 +82,7 @@
                   <td>{{ lab.address }}</td>
                   <td>
                     <router-link
-                      :to="{ name: 'edit-category', params: { id: lab.labId } }"
+                      :to="{ name: 'edit-category', params: { id: lab } }"
                       class="btn btn-sm btn-info"
                       >Edit</router-link
                     >

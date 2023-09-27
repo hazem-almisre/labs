@@ -3,6 +3,7 @@
 use App\Http\Controllers\Web\Analysis\AnalysisLabController;
 use App\Http\Controllers\Web\Lab\AdminLabController;
 use App\Http\Controllers\Web\Lab\AdminRegionController;
+use App\Http\Controllers\Web\Lab\LabProfileController;
 use App\Http\Controllers\Web\Offer\OfferController;
 use Illuminate\Support\Facades\Route;  //--Eita dile ar "route" er niche error er red-wave ta r show kore na.
 
@@ -46,4 +47,13 @@ Route::group(['prefix'=>'offer'],function(){
     Route::post('add', [OfferController::class,'store']);
     Route::get('get/all/offer', [OfferController::class,'index']);
     Route::delete('delete/{offerId}', [OfferController::class,'destroy']);
+});
+
+Route::group(['prefix'=>'lab' , 'middleware'=>'auth:lab'],function () {
+    Route::get('get',[LabProfileController::class,'getLab']);
+
+    Route::post('update',[LabProfileController::class,'updateLab']);
+
+    Route::get('get/regions', [LabProfileController::class,'getRegions']);
+
 });

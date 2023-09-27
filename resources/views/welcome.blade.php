@@ -71,9 +71,9 @@
                                 Dashboard
                             </router-link>
 
-                            <router-link class="nav-link" to="/pos">
+                            <router-link class="nav-link" to="/lab/profile" id="labProfile" style="display: none">
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                                POS
+                                Profile
                             </router-link>
 
                     <!--------------Employee----------->
@@ -301,6 +301,7 @@
                 else if(type === 'lab'){
                     $("#product").css("display","");
                     $("#offer").css("display","");
+                    $("#labProfile").css("display","");
                 }
             }
         </script>
