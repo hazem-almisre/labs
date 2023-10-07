@@ -23,6 +23,7 @@ class CreateNursesTable extends Migration
             $table->string('password');
             $table->string('socId')->default('0');
             $table->boolean('isActive')->default(0);
+            // $table->text('notification_token')->nullable();
             $table->timestamps();
         });
     }

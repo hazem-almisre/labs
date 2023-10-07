@@ -11,10 +11,12 @@ class Contact extends Model
     protected $fillable = [
         'address',
         'region',
-        'moreDetails',
+        'addressOwner',
         'id',
-        'sickPhone',
-        'sickName'
+        'numberPhone',
+        'addressOwnerName',
+        'lat',
+        'long'
     ];
 
 }

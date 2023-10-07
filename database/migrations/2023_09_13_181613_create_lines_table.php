@@ -15,9 +15,12 @@ class CreateLinesTable extends Migration
     {
         Schema::create('lines', function (Blueprint $table) {
             $table->bigIncrements('lineId');
-            $table->date('dateDo');
-            $table->time('timeDo');
-            $table->string('price');
+            $table->string('dateStart');
+            $table->text('analysis');
+            $table->integer('price');
+            $table->enum('status',['finish','prosessing']);
+            $table->unsignedBigInteger('orderId');
+            $table->foreign('orderId')->references('orderId')->on('order_apis')->onDelete('cascade');
             $table->timestamps();
         });
     }

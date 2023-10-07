@@ -27,6 +27,7 @@ class UserAuthController extends Controller
             $data['phone'] = $request->phone;
             $data['password'] = Hash::make($request->password);
             $data['socId']='1';
+            $data['notification_token']=$request->notification_token;
 
             User::query()->create($data);
 

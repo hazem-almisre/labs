@@ -15,15 +15,18 @@ class CreateOrderApisTable extends Migration
     {
         Schema::create('order_apis', function (Blueprint $table) {
             $table->bigIncrements('orderId');
-            $table->unsignedBigInteger('nurseId');
+            $table->unsignedBigInteger('nurseId')->nullable();
             $table->unsignedBigInteger('contactId');
+            $table->unsignedBigInteger('labId');
+            $table->unsignedBigInteger('userId');
             $table->string('totalPrice');
-            $table->string('serviceName');
-            $table->integer('status')->default(0);
-            $table->date('dateOrder');
-            $table->time('timeOrder');
-            $table->foreign('nurseId')->references('nurseId')->on('nurses');
-            $table->foreign('contactId')->references('contactId')->on('contacts');
+            $table->text('instructios');
+            $table->string('date'); //dateStart
+            $table->boolean('isFrequency')->default(0);
+            $table->foreign('nurseId')->references('nurseId')->on('nurses')->onUpdate('cascade');
+            $table->foreign('userId')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('labId')->references('labId')->on('labs')->onUpdate('cascade');
+            $table->foreign('contactId')->references('contactId')->on('contacts')->onUpdate('cascade');
             $table->timestamps();
         });
     }

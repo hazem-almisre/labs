@@ -9,19 +9,54 @@ class OrderApi extends Model
     protected $primaryKey = 'orderId';
 
     protected $fillable = [
-        'analysisId',
         'nurseId',
         'contactId',
         'totalPrice',
         'serviceName',
-        'status',
-        'dateOrder',
-        'timeOrder',
+        'date',
+        'labId',
+        'userId',
+        'isFrequency',
+        'instructios'
     ];
 
-    protected $hidden =[
-        'analysisId',
-        'nurseId',
-        'contactId',
-    ];
+    /**
+     * Get the nurse that owns the OrderApi
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function nurse()
+    {
+        return $this->belongsTo(Nurse::class, 'nurseId', 'nurseId');
+    }
+
+    /**
+     * Get the lab that owns the OrderApi
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function lab()
+    {
+        return $this->belongsTo(Lab::class, 'labId', 'labId');
+    }
+
+    /**
+     * Get the user that owns the OrderApi
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'userId', 'id');
+    }
+
+    /**
+     * Get the contact that owns the OrderApi
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function contact()
+    {
+        return $this->belongsTo(Contact::class, 'contactId', 'contactId');
+    }
 }

@@ -9,8 +9,11 @@ class Line extends Model
     protected $primaryKey = 'lineId';
 
     protected $fillable = [
-        'dateDo',
-        'timeDo',
+        'dateStart',
+        'analysis',
         'price',
+        'status',
+        'orderId'
     ];
+
 }

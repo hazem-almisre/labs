@@ -40,7 +40,7 @@ class ContactUserController extends Controller
             $userId = auth()->id();
             $request['id'] = $userId;
             $contact=Contact::query()->create($request->all());
-            return parent::sendRespons(['result'=>$contact],ResponseMessage::$registerNurseSuccessfullMessage);
+            return parent::sendRespons(['result'=>$contact->contactId],ResponseMessage::$registerNurseSuccessfullMessage);
         } catch (\Throwable $th) {
             return parent::sendError($th->getMessage(),parent::getPostionError(ContactUserController::class,45),500) ;
         }
@@ -57,7 +57,7 @@ class ContactUserController extends Controller
     {
         try {
             $contact = Contact::query()->where('contactId','=',$contactId)->delete();
-            return parent::sendRespons(['result'=>[]],ResponseMessage::$nurseDeleteSuccessfull);
+            return parent::sendRespons(['result'=>['message'=>"contact is deleted"]],ResponseMessage::$nurseDeleteSuccessfull);
         } catch (\Throwable $th) {
             return parent::sendError($th->getMessage(),parent::getPostionError(ContactUserController::class,62),500) ;
         }

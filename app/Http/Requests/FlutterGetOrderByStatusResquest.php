@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class FlutterUserRegisterRequest extends FormRequest
+class FlutterGetOrderByStatusResquest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,18 +26,14 @@ class FlutterUserRegisterRequest extends FormRequest
     public function rules()
     {
         return [
-                'phone'=>['string','required','unique:users,phone'],
-                'name'=>['string','required','max:255'],
-                'password'=>['string','required','min:8'],
-                'notification_token'=>['string','required'],
-
+            'status'=>['required','in:onProgres,finish,prosessing'],
         ];
     }
 
     public function messages()
     {
         return [
-            'phone.required'=>"الهاتف مطلوب"
+            // 'status.required'="status requ"
         ];
     }
 
@@ -47,5 +43,4 @@ class FlutterUserRegisterRequest extends FormRequest
         $response = Controller::sendError(['result'=>$errors->messages()],'invald data input',422);
         throw new HttpResponseException($response);
     }
-
 }

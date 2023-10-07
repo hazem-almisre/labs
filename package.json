@@ -9,7 +9,6 @@
         "prod": "npm run production",
         "production": "mix --production",
         "start": "serve build -s -n -L -p $PORT"
-
     },
     "devDependencies": {
         "axios": "^1.5.0",
@@ -27,8 +26,10 @@
         "vue-template-compiler": "^2.6.12"
     },
     "dependencies": {
+        "express": "^4.18.2",
         "noty": "^3.2.0-beta-deprecated",
         "serve": "^14.2.1",
+        "socket.io": "^4.7.2",
         "sweetalert2": "^11.7.28",
         "vue-router": "^3.4.3"
     }

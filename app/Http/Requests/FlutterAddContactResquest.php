@@ -28,9 +28,12 @@ class FlutterAddContactResquest extends FormRequest
         return [
             'address'=>['required','string'],
             'region'=>['required','string'],
-            'moreDetails'=>['required','string'],
-            'sickPhone'=>['required','string'],
-            'sickName'=>['required','string']
+            'numberPhone'=>['required','string'],
+            'addressOwnerName'=>['required','string'],
+            'addressOwner'=>['required','string'],
+            'lat'=>['required','string'],
+            'long'=>['required','string'],
+
         ];
 
     }

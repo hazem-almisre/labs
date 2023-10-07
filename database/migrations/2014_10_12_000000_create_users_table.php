@@ -25,6 +25,7 @@ class CreateUsersTable extends Migration
             $table->string('socId')->default('1');
             $table->date('birthDay')->nullable();
             $table->integer('role')->default(0);
+            $table->text('notification_token');
             $table->rememberToken();
             $table->timestamps();
         });

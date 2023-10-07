@@ -195,25 +195,6 @@
                                 </div>
                               </div>
 
-                    <!--------------Expense----------->
-                            <div class="accordion-item ">
-                                <h2 class="accordion-header" id="heading6">
-                                  <button class="accordion-button bg-dark text-light "  type="button" data-bs-toggle="collapse" data-bs-target="#collapse6" aria-expanded="false" aria-controls="collapse6">
-                                    <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                                    Expense
-                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                  </button>
-                                </h2>
-                                <div id="collapse6" class="accordion-collapse collapse " aria-labelledby="heading6" data-bs-parent="#sidenavAccordion">
-                                  <div class="accordion-body bg-dark text-light" style="padding: 0%;margin: 0%;">
-                                    <ul class='list-unstyled bg-dark' style="margin: 0">
-                                        <li><router-link class="nav-link" to="/store-expense">Add Expense</router-link></li>
-                                        <div class="dropdown-divider text-black"></div>
-                                        <li><router-link class="nav-link" to="/expense">All Expense</router-link></li>
-                                    </ul>
-                                    </div>
-                                </div>
-                              </div>
                     <!--------------Salary----------->
                             <div class="accordion-item ">
                                 <h2 class="accordion-header" id="heading7">
